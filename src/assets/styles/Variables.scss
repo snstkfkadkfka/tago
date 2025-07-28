@@ -1,0 +1,25 @@
+/* style 변수 */
+$main_color:#FFA143;
+$sub_color:#61ABFF;
+$accent_color_orange:#FF6200;
+$black_color:#353535;
+$background_color:#FBFFFD;
+$beige_color:#ffedde;
+$gray_color:#727272;
+$es_fontFamily: "Inter", sans-serif;
+$ko_fontFamily: "Noto Sans KR", sans-serif;
+
+/* 함수 */
+@mixin center{
+  display:flex;
+  justify-content: center;
+  align-items: center;
+}
+@mixin icon{
+  width: 20px;height: 20px;
+  border: 4px solid $accent_color_orange;
+  border-radius: 50%;
+  box-sizing: border-box;
+  background-color: #fff;
+  @content;
+}
