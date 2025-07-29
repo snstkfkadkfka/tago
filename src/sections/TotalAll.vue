@@ -26,7 +26,7 @@ export default {
   },
     data() {
     return {
-      locations: [] // 🔹 전체 주소 데이터
+      locations: [] // 전체 주소 데이터
     };
   },
   methods: {

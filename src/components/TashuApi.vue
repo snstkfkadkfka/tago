@@ -93,7 +93,6 @@ export default {
       if (this.selectedMarker && this.selectedMarker !== marker) {
         this.selectedMarker.setMap(this.map); // 다시 보여주기
       }
-      console.log('선택된 정류장:', item); // ✅ 확인
       this.selectedStop = item;
       this.selectedMarker = marker;
 
@@ -111,7 +110,7 @@ export default {
       this.selectMarker(matched, matchedMarker);
       this.map.panTo(new window.naver.maps.LatLng(matched.x_pos, matched.y_pos));
 
-      // ✅ active 스타일 클래스 조작
+      //active 스타일 클래스 조작
       const el = document.querySelector(`.markr[data-id="${newId}"]`);
       if (el) {
         document.querySelectorAll('.markr.active').forEach(e => e.classList.remove('active'));

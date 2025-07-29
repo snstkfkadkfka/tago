@@ -74,11 +74,8 @@ export default {
   },
   methods:{
     startAllAnimations() {
-      console.log('계산 시작!');
       this.netCalories=this.calculateNetCalories();
-      console.log('순 칼로리:', this.netCalories);
-
-        // 숫자 카운팅 애니메이션 실행
+      // 숫자 카운팅 애니메이션 실행
       this.animateNumber(this.netCalories);
 
       this.animateDonut('red', this.targetPercents.red);
@@ -112,8 +109,6 @@ export default {
       return MET * weight * (timeMin / 60);
     },
     calculateNetCalories() {
-      console.log('운동 시간 (분):', this.cyclingMinutes); // NaN인지 확인
-      console.log('섭취 칼로리:', this.caloriesIntake); // 값 들어오는지 확인
       const burned = this.getCaloriesBurned(this.cyclingMinutes);
       return this.caloriesIntake - burned;
     },

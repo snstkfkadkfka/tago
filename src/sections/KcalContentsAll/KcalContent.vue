@@ -86,7 +86,6 @@
     },
     addSelectedFood() {
       if (this.selectedFood) {
-        console.log('추가됨, 자동완성 숨김 처리');
         this.selectedFoods.push({ ...this.selectedFood });
         this.selectedFood = null;
         this.searchkeyword = '';
@@ -102,10 +101,7 @@
     },
   
     removeFood(foodToRemove) {
-      console.log('삭제 요청된 음식:', foodToRemove);
-      console.log('삭제 전 목록:', this.selectedFoods);
       this.selectedFoods = this.selectedFoods.filter(food => food !== foodToRemove);
-      console.log('삭제 후 목록:', this.selectedFoods);
     },
     onInput(event) {
       if (!this.isComposing) {
