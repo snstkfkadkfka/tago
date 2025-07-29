@@ -31,9 +31,15 @@ export default {
   },
   async mounted() {
     try {
-      const res = await fetch('/api/v1/openapi/station', {
-        headers: {'api-token':  process.env.VUE_APP_TASHU_KEY,}
-      });
+      const baseURL = process.env.NODE_ENV === 'production'
+  ? 'https://bikeapp.tashu.or.kr:50041/api'
+  : '/api'; // 개발용 프록시
+
+const res = await fetch(`${baseURL}/v1/openapi/station`, {
+  headers: {
+    'api-token': process.env.VUE_APP_TASHU_KEY
+  }
+});
 
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       
