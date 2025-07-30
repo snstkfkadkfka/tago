@@ -29,70 +29,72 @@ export default {
       showMarkerInfo: false 
     }
   },
-  async mounted() {
-    try {
-      const baseURL = process.env.NODE_ENV === 'production'
-  ? 'https://bikeapp.tashu.or.kr:50041/api'
-  : '/api'; // 개발용 프록시
+async mounted() {
+  try {
+    // API 호출 대신 정적 JSON 파일 경로로 fetch
+    const res = await fetch('/data/tashu.json');
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
-const res = await fetch(`${baseURL}/v1/openapi/station`, {
-  headers: {
-    'api-token': process.env.VUE_APP_TASHU_KEY
-  }
-});
+    const json = await res.json();
 
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      
-      const json = await res.json();
+      console.log('Fetched JSON data:', json);  // 여기서 데이터 구조 확인
+    // 예를 들어 json.results 또는 json.DATA 배열이면 그걸 사용
+    this.apiData = json.results ? json.results.map(item => ({
+      id: item.id,
+      name: item.name,
+      x_pos: item.x_pos,
+      y_pos: item.y_pos,
+      parking_count: item.parking_count
+    })) : json.map(item => ({
+      id: item.id,
+      name: item.name,
+      x_pos: item.x_pos,
+      y_pos: item.y_pos,
+      parking_count: item.parking_count
+    }));
+    
+    this.$emit('send-locations', {
+      names: this.apiData.map(item => item.name),
+      fullData: this.apiData
+    });
 
-      this.apiData = json.results.map(item => ({
-        id: item.id,
-        x_pos: item.x_pos,
-        y_pos: item.y_pos,
-        name: item.name,
-        parking_count: item.parking_count
-      }));
-
-      this.$emit('send-locations',{
-        names: this.apiData.map(item=>item.name),
-        fullData:this.apiData
-      })
-
-      this.apiData.forEach(item =>{
-        const position = new window.naver.maps.LatLng(item.x_pos, item.y_pos);
-        const marker= new window.naver.maps.Marker({
-          map:this.map,
-          position:position,
-          icon:{
-            content:`
+    this.apiData.forEach(item => {
+      const position = new window.naver.maps.LatLng(item.x_pos, item.y_pos);
+      const marker = new window.naver.maps.Marker({
+        map: this.map,
+        position: position,
+        icon: {
+          content: `
             <div class="markr" data-id=${item.id}>
               ${item.parking_count}
             </div>
-            `
-          }
-        });
-        marker.itemId = item.id; // 식별용          
-        this.markers.push(marker);
-
-        window.naver.maps.Event.addListener(marker, 'click', () => {
-          this.selectMarker(item, marker);
-          this.map.panTo(position);
-          this.$emit('marker_click', item);
-
-          const el = document.querySelector(`.markr[data-id="${item.id}"]`);
-            if (el) {
-              document.querySelectorAll('.markr.active').forEach(e => e.classList.remove('active'));
-              el.classList.add('active');
-            }
-        });
+          `
+        }
       });
-    } catch (e) {
-      this.error = e.message;
-    }
-      window.naver.maps.Event.addListener(this.map, 'dragstart', () => {
+      marker.itemId = item.id;
+      this.markers.push(marker);
+
+      window.naver.maps.Event.addListener(marker, 'click', () => {
+        this.selectMarker(item, marker);
+        this.map.panTo(position);
+        this.$emit('marker_click', item);
+
+        const el = document.querySelector(`.markr[data-id="${item.id}"]`);
+        if (el) {
+          document.querySelectorAll('.markr.active').forEach(e => e.classList.remove('active'));
+          el.classList.add('active');
+        }
+      });
+    });
+  } catch (e) {
+    this.error = e.message;
+  }
+
+  window.naver.maps.Event.addListener(this.map, 'dragstart', () => {
     this.showMarkerInfo = false;
   });
-  },
+},
+
   methods: {
     selectMarker(item, marker) {
       // 이전에 선택된 마커 복원
