@@ -70,13 +70,8 @@ export default {
     // locations() {
     //   this.searchText += '';
     // }
-     locations(val) {
-    console.log('🔍 SearchRoad.vue 받은 locations:', val);
+
   }
-  },
-  mounted() {
-  console.log('📌 SearchRoad.vue 초기 location 수:', this.locations.length);
-}
 };
 </script>
 

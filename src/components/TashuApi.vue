@@ -32,12 +32,11 @@ export default {
 async mounted() {
   try {
     // API 호출 대신 정적 JSON 파일 경로로 fetch
-    const res = await fetch('/data/tashu.json');
+    const res = await fetch('./data/tashu.json');
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
     const json = await res.json();
 
-      console.log('Fetched JSON data:', json);  // 여기서 데이터 구조 확인
     // 예를 들어 json.results 또는 json.DATA 배열이면 그걸 사용
     this.apiData = json.results ? json.results.map(item => ({
       id: item.id,

@@ -33,18 +33,7 @@ export default {
     handleLocationSelect(id) {
     this.$refs.mainMap?.handleSearchId(id);
     }
-  },
-  watch: {
-  locations(val) {
-    console.log('📦 TotalAll.vue에 전달된 타슈 데이터:', val);
   }
-},
-mounted() {
-  console.log('📦 초기 타슈 데이터 상태:', this.locations);
-}
-
-
-
 };
 </script>
 <style lang="scss">
