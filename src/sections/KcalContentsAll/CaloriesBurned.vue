@@ -8,73 +8,72 @@
         @blur="formatOnBlur"
         placeholder="00:00:00"
       >
-        <button class="goto-btn" @click=fillInput><p>타이머 기록 추가 +</p></button>
+      <button class="goto-btn" @click=fillInput><p>타이머 기록 추가 +</p></button>
   </section>
 </template>
 <script>
-import { ref, defineComponent, watch} from 'vue'
+  import { ref, defineComponent, watch} from 'vue'
 
-export default defineComponent({
-  name: 'CaloriesBurned',
-  props: {
-    lastRecord: {
-      type: Number,
-      default: 0
-    }
-  },
+  export default defineComponent({
+    name: 'CaloriesBurned',
+    props: {
+      lastRecord: {
+        type: Number,
+        default: 0
+      }
+    },
     setup(props, { emit }) {
-    const formattedTime = ref('')
-    const isFilledByButton = ref(false)
+      const formattedTime = ref('')
+      const isFilledByButton = ref(false)
 
-    const formatSecondsToHHMMSS = (totalSeconds) => {
-      const hours = Math.floor(totalSeconds / 3600)
-      const minutes = Math.floor((totalSeconds % 3600) / 60)
-      const seconds = totalSeconds % 60
-      return [
-        hours.toString().padStart(2, '0'),
-        minutes.toString().padStart(2, '0'),
-        seconds.toString().padStart(2, '0')
-      ].join(':')
-    }
+      const formatSecondsToHHMMSS = (totalSeconds) => {
+        const hours = Math.floor(totalSeconds / 3600)
+        const minutes = Math.floor((totalSeconds % 3600) / 60)
+        const seconds = totalSeconds % 60
+        return [
+          hours.toString().padStart(2, '0'),
+          minutes.toString().padStart(2, '0'),
+          seconds.toString().padStart(2, '0')
+        ].join(':')
+      }
 
-    const onInputTime = (e) => {
-      isFilledByButton.value = false
-      const raw = e.target.value.replace(/[^\d:]/g, '')
-      formattedTime.value = raw
-    }
+      const onInputTime = (e) => {
+        isFilledByButton.value = false
+        const raw = e.target.value.replace(/[^\d:]/g, '')
+        formattedTime.value = raw
+      }
 
-    const fillInput = () => {
-      if (props.lastRecord > 0) {
-        formattedTime.value = formatSecondsToHHMMSS(props.lastRecord)
-        isFilledByButton.value = true
-      } else {
-        formattedTime.value = ''
+      const fillInput = () => {
+        if (props.lastRecord > 0) {
+          formattedTime.value = formatSecondsToHHMMSS(props.lastRecord)
+          isFilledByButton.value = true
+        } else {
+          formattedTime.value = ''
+        }
+      }
+
+      const formatOnBlur = () => {
+        const numbers = formattedTime.value.replace(/\D/g, '').padStart(6, '0')
+        const hours = numbers.slice(0, 2)
+        const minutes = numbers.slice(2, 4)
+        const seconds = numbers.slice(4, 6)
+        formattedTime.value = `${hours}:${minutes}:${seconds}`
+      }
+
+      watch(formattedTime, (val) => {
+        const [hh = 0, mm = 0, ss = 0] = val.split(':').map(Number)
+        const minutes = hh * 60 + mm + ss / 60
+        emit('update-time', minutes)
+      })
+
+      return {
+        formattedTime,
+        onInputTime,
+        fillInput,
+        formatOnBlur
       }
     }
-
-    const formatOnBlur = () => {
-      const numbers = formattedTime.value.replace(/\D/g, '').padStart(6, '0')
-      const hours = numbers.slice(0, 2)
-      const minutes = numbers.slice(2, 4)
-      const seconds = numbers.slice(4, 6)
-      formattedTime.value = `${hours}:${minutes}:${seconds}`
-    }
-
-    watch(formattedTime, (val) => {
-      const [hh = 0, mm = 0, ss = 0] = val.split(':').map(Number)
-      const minutes = hh * 60 + mm + ss / 60
-      emit('update-time', minutes)
-    })
-
-    return {
-      formattedTime,
-      onInputTime,
-      fillInput,
-      formatOnBlur
-    }
-  }
-})
-
+  })
 </script>
 <style lang="scss">
   .CaloriesBurned{

@@ -1,8 +1,8 @@
 <template> 
   <section class="TotalAll">
     <MainMap  
-    ref="mainMap" 
-    @update:locations="locations = $event" 
+      ref="mainMap" 
+      @update:locations="locations = $event" 
     />
     <SearchTimer 
       class="AllSearch-Swiper"
@@ -13,28 +13,28 @@
   </section>
 </template>
 <script>
-import MainMap from './MainMap.vue';
-import HeaderContens from './HeaderContens/HeaderContens.vue';
-import SearchTimer from './SearchTimer/SearchTimer.vue';
+  import MainMap from './MainMap.vue';
+  import HeaderContens from './HeaderContens/HeaderContens.vue';
+  import SearchTimer from './SearchTimer/SearchTimer.vue';
 
-export default {
-  name:'TotalAll',
-  components:{
-    MainMap,
-    HeaderContens,
-    SearchTimer
-  },
+  export default {
+    name:'TotalAll',
+    components:{
+      MainMap,
+      HeaderContens,
+      SearchTimer
+    },
     data() {
-    return {
-      locations: [] // 전체 주소 데이터
-    };
-  },
-  methods: {
-    handleLocationSelect(id) {
-    this.$refs.mainMap?.handleSearchId(id);
+      return {
+        locations: [] // 전체 주소 데이터
+      };
+    },
+    methods: {
+      handleLocationSelect(id) {
+      this.$refs.mainMap?.handleSearchId(id);
+      }
     }
-  }
-};
+  };
 </script>
 <style lang="scss">
   .TotalAll{

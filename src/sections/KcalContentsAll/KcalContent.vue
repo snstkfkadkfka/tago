@@ -17,33 +17,23 @@
           <KcalData :keyword="searchkeyword" @sendFoodData="handleFoodData" />
           <button @click="addSelectedFood">추가하기</button>
         </div>
-
         <div class="food-selects" v-if="showDropdown && searchkeyword">
           <KcalListSelect 
           :foods="foodList"
           :keyword="searchkeyword"
           @select="selectFood"
           />
-
         </div>
-        
         <div class="listFoods">
           <KcalListFood :foods="selectedFoods" @removeFood="removeFood" />
-
         </div>
-
-        
         <span>1인분 기준</span>
       </div>
-
       <div class="all-kcal">
         <h2>섭취 칼로리</h2>
         <p>{{ totalKcal }}<span>kcal</span></p>
       </div>
-
     </article>
-
-
   </section>
 </template>
 <script scoped>
@@ -65,9 +55,7 @@
       foodList: [],       
       selectedFood: null,
       selectedFoods: [],
-      showDropdown: false,
-      
-     
+      showDropdown: false
     };
   },
   methods: {
@@ -89,7 +77,7 @@
         this.selectedFoods.push({ ...this.selectedFood });
         this.selectedFood = null;
         this.searchkeyword = '';
-        this.showDropdown = false; // ✅ 자동완성 숨기기
+        this.showDropdown = false;
 
         this.$emit('update-total-kcal',this.totalKcal)
 
@@ -99,7 +87,6 @@
         });
       }
     },
-  
     removeFood(foodToRemove) {
       this.selectedFoods = this.selectedFoods.filter(food => food !== foodToRemove);
     },
@@ -109,20 +96,18 @@
         this.showDropdown = !!event.target.value;
       }
     },
-
     onCompositionEnd(event) {
       this.isComposing = false;
       this.searchkeyword = event.target.value;
     },
-
   },
   computed: {
-  totalKcal() {
-    return this.selectedFoods.reduce((sum, food) => {
-      return sum + (parseFloat(food.kcalPerServing) || 0);
-    }, 0).toFixed(0);
+    totalKcal() {
+      return this.selectedFoods.reduce((sum, food) => {
+        return sum + (parseFloat(food.kcalPerServing) || 0);
+      }, 0).toFixed(0);
+    }
   }
-}
 }
 </script>
 <style lang="scss">
@@ -211,7 +196,5 @@
         }
       }
     }
-
-
   }
 </style>

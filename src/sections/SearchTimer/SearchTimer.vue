@@ -11,43 +11,42 @@
       :class="{show:isKcalVisible}"
       :lastRecord="lastRecord"
       @close-kcal="hideKcalContent"
-      />
+    />
   </section>
 </template>
 <script>
-import AllSearch from './AllSearch.vue';
-import KcalContentsAll from '../KcalContentsAll/KcalContentsAll.vue';
-export default {
-  name:'SearchTimer',
-  components:{
-    AllSearch,
-    KcalContentsAll
-  },
-  data(){
-    return{
-      isKcalVisible:false,
-      lastRecord:0
-    }
-  },
-   props: {
-    locations: {
-      type: Array,
-      default: () => []
-    }
-  },
-  methods:{
-    showKcalContent(){
-      this.isKcalVisible=true
+  import AllSearch from './AllSearch.vue';
+  import KcalContentsAll from '../KcalContentsAll/KcalContentsAll.vue';
+  export default {
+    name:'SearchTimer',
+    components:{
+      AllSearch,
+      KcalContentsAll
     },
-    hideKcalContent(){
-      this.isKcalVisible=false;
+    data(){
+      return{
+        isKcalVisible:false,
+        lastRecord:0
+      }
     },
-    saveElapsedTime(time){
-      this.lastRecord = time
-      console.log('✅ 타이머 종료 시 전달된 초:', time);
+    props: {
+      locations: {
+        type: Array,
+        default: () => []
+      }
+    },
+    methods:{
+      showKcalContent(){
+        this.isKcalVisible=true
+      },
+      hideKcalContent(){
+        this.isKcalVisible=false;
+      },
+      saveElapsedTime(time){
+        this.lastRecord = time
+      }
     }
   }
-}
 </script>
 <style lang="scss">
   .kcalAii{

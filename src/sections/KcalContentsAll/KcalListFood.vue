@@ -14,15 +14,15 @@
   </section>
 </template>
 <script>
-export default {
-  name:'KcalListFood',
-  props:{
-    foods:{
-      type:Array,
-      required:true
+  export default {
+    name:'KcalListFood',
+    props:{
+      foods:{
+        type:Array,
+        required:true
+      }
     }
   }
-}
 </script>
 <style lang="scss">
 .KcalListFood{

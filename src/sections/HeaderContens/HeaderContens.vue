@@ -6,7 +6,6 @@
     <button class="hamburger" @click="toggleMenu"> 
       <i class="fa-solid fa-bars"></i>
     </button>
-
     <MenuHamburger   
       :class="['MenuHamburger', { 'slide-in': isMenuOpen }]"
       @close="closeMenu"

@@ -11,8 +11,8 @@
         autocorrect="off"
         spellcheck="false"
         placeholder="장소 검색"
-        />
-        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+      />
+      <i class="fa-solid fa-magnifying-glass search-icon"></i>
     </div>
     <ul v-if="suggestions.length" class="autocomplete-list">
       <li
@@ -25,58 +25,45 @@
     </ul>
   </section>
 </template>
-
 <script>
-export default {
-  name: 'SearchRoad',
-  props:{
-    locations: {
-      type: Array,
-      default: () => []
-    }
-  },
-  data() {
-    return {
-      searchText: '',
-      searchid: `search-${Math.random().toString(36).substr(2, 8)}`
-    };
-  },
-  computed: {
-    suggestions() {
-      const text = this.searchText.toLowerCase();
-      if (!text) return []; // ✅ 입력 없으면 아무것도 안 보여줌
-      return this.locations
+  export default {
+    name: 'SearchRoad',
+    props:{
+      locations: {
+        type: Array,
+        default: () => []
+      }
+    },
+    data() {
+      return {
+        searchText: '',
+        searchid: `search-${Math.random().toString(36).substr(2, 8)}`
+      };
+    },
+    computed: {
+      suggestions() {
+        const text = this.searchText.toLowerCase();
+        if (!text) return []; // 입력 없으면 아무것도 안 보여줌
+        return this.locations
         .filter(loc => loc.name && loc.name.toLowerCase().includes(text))
         .map(loc => loc.name);
-    }
-  },
-  methods: {
-  selectItem(itemName) {
-  const selected = this.locations.find(loc => loc.name === itemName);
-  if (selected) {
-    this.$emit('select-id', selected.id);
-  }
-
-  this.searchText = ''; // ✅ input 초기화
-  this.$nextTick(() => {
-    document.getElementById(this.searchid)?.blur(); // ✅ 포커스 제거
-  });
-},
-    handleSelect() {
-      // 입력시 동작 필요하면 작성
-    }
-  },
-  watch: {
-    // locations() {
-    //   this.searchText += '';
-    // }
-
-  }
-};
+      }
+    },
+    methods: {
+      selectItem(itemName) {
+        const selected = this.locations.find(loc => loc.name === itemName);
+        if (selected) {
+          this.$emit('select-id', selected.id);
+        }
+        this.searchText = ''; // input 초기화
+        this.$nextTick(() => {
+          document.getElementById(this.searchid)?.blur(); // 포커스 제거
+        });
+      },
+    },
+  };
 </script>
-
 <style lang="scss" scoped>
-
 .SearchRoad{
   position: relative;
   z-index: 10;

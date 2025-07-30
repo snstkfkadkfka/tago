@@ -1,23 +1,23 @@
 <template>
   <section class="TashuStopMarker">
-      <i class="fa-solid fa-bicycle"></i>
-      <span class="id" v-if="stopData">ID:<em>{{ stopData.id }}</em></span>
-      <article class="text">
-        <h4>{{stopData.name}}</h4>
-        <span>자전거 개수 : <em>{{stopData.parking_count}}</em></span>
-      </article>
+    <i class="fa-solid fa-bicycle"></i>
+    <span class="id" v-if="stopData">ID:<em>{{ stopData.id }}</em></span>
+    <article class="text">
+      <h4>{{stopData.name}}</h4>
+      <span>자전거 개수 : <em>{{stopData.parking_count}}</em></span>
+    </article>
   </section>
 </template>
 <script>
-export default {
-  name:'TashuStopMarker',
-  props:{
-    stopData:{
-      type:Object,
-      default:null
+  export default {
+    name:'TashuStopMarker',
+    props:{
+      stopData:{
+        type:Object,
+        default:null
+      }
     }
   }
-}
 </script>
 <style lang="scss">
   .TashuStopMarker{

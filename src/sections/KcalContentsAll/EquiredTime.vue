@@ -5,7 +5,6 @@
       <h2>순 칼로리</h2>
       <p class="minute" :class="netCalorieColorClass">{{animatedFormattedNetCalories}}<span>kcal</span></p>
     </div>
-
     <div class="equired-bg">
       <div 
       class="red-orange graph"
@@ -31,108 +30,108 @@
   </section>
 </template>
 <script>
-export default {
-  name:'EquiredTiem',
-  data(){
-    return{
-       // 퍼센트 목표값들
-      netCalories:0,
-      targetPercents: {
-        red: 50,
-        orange: 32.5,
-        yellow: 16.6,
+  export default {
+    name:'EquiredTiem',
+    data(){
+      return{
+        // 퍼센트 목표값들
+        netCalories:0,
+        targetPercents: {
+          red: 50,
+          orange: 32.5,
+          yellow: 16.6,
+        },
+        currentPercents: {
+          red: 0,
+          orange: 0,
+          yellow: 0
+        },
+        animationDuration: 1000,
+        animatedNetCalories: 0,
+      }
+    },
+    props:{
+      caloriesIntake:{
+        type:Number,
+        required:true
       },
-      currentPercents: {
-        red: 0,
-        orange: 0,
-        yellow: 0
+      cyclingMinutes:{
+        type:Number,
+        required:true
+      }
+    },
+    computed:{
+      formattedNetCalories(){
+        return Math.max(0, Math.round(this.netCalories));
       },
-      animationDuration: 1000,
-      animatedNetCalories: 0,
+      animatedFormattedNetCalories() {
+        return Math.round(this.animatedNetCalories);
+      },
+      netCalorieColorClass() {
+        return this.animatedNetCalories < 0 ? 'blue-color' : 'orange-color';
+      }
+    },
+    methods:{
+      startAllAnimations() {
+        this.netCalories=this.calculateNetCalories();
+        // 숫자 카운팅 애니메이션 실행
+        this.animateNumber(this.netCalories);
+
+        this.animateDonut('red', this.targetPercents.red);
+        this.animateDonut('orange', this.targetPercents.orange);
+        this.animateDonut('yellow', this.targetPercents.yellow);
+      },
+      easeInOutCubic(t) {
+        return t < 0.5
+        ? 4 * t * t * t
+        : 1 - Math.pow(-2 * t + 2, 3) / 2;
+      },
+      animateDonut(name, target) {
+        const start = performance.now();
+        const duration = this.animationDuration;
+
+        const animate = (now) => {
+          const elapsed = now - start;
+          const t = Math.min(elapsed / duration, 1);
+          const eased = this.easeInOutCubic(t);
+          this.currentPercents[name] = +(target * eased).toFixed(1);
+
+          if (t < 1) {
+            requestAnimationFrame(animate);
+          }
+        };
+        requestAnimationFrame(animate);
+      },
+      getCaloriesBurned(timeMin){
+        const MET = 6.8;
+        const weight = 67;
+        return MET * weight * (timeMin / 60);
+      },
+      calculateNetCalories() {
+        const burned = this.getCaloriesBurned(this.cyclingMinutes);
+        return this.caloriesIntake - burned;
+      },
+      animateNumber(targetValue) {
+        const start = performance.now();
+        const duration = 1000;
+        const initial = this.animatedNetCalories;
+
+        const animate = (now) => {
+          const elapsed = now - start;
+          const t = Math.min(elapsed / duration, 1);
+          const eased = this.easeInOutCubic(t);
+          this.animatedNetCalories = initial + (targetValue - initial) * eased;
+
+          if (t < 1) {
+            requestAnimationFrame(animate);
+          } else {
+            this.animatedNetCalories = targetValue; // 최종 값 보정
+          }
+        };
+        requestAnimationFrame(animate);
+      },
     }
-  },
-  props:{
-    caloriesIntake:{
-      type:Number,
-      required:true
-    },
-    cyclingMinutes:{
-      type:Number,
-      required:true
-    }
-  },
-  computed:{
-    formattedNetCalories(){
-      return Math.max(0, Math.round(this.netCalories));
-    },
-    animatedFormattedNetCalories() {
-      return Math.round(this.animatedNetCalories);
-    },
-    netCalorieColorClass() {
-      return this.animatedNetCalories < 0 ? 'blue-color' : 'orange-color';
-    }
-  },
-  methods:{
-    startAllAnimations() {
-      this.netCalories=this.calculateNetCalories();
-      // 숫자 카운팅 애니메이션 실행
-      this.animateNumber(this.netCalories);
-
-      this.animateDonut('red', this.targetPercents.red);
-      this.animateDonut('orange', this.targetPercents.orange);
-      this.animateDonut('yellow', this.targetPercents.yellow);
-    },
-    easeInOutCubic(t) {
-      return t < 0.5
-      ? 4 * t * t * t
-      : 1 - Math.pow(-2 * t + 2, 3) / 2;
-    },
-    animateDonut(name, target) {
-      const start = performance.now();
-      const duration = this.animationDuration;
-
-      const animate = (now) => {
-        const elapsed = now - start;
-        const t = Math.min(elapsed / duration, 1);
-        const eased = this.easeInOutCubic(t);
-        this.currentPercents[name] = +(target * eased).toFixed(1);
-
-        if (t < 1) {
-          requestAnimationFrame(animate);
-        }
-      };
-      requestAnimationFrame(animate);
-    },
-    getCaloriesBurned(timeMin){
-      const MET = 6.8;
-      const weight = 67;
-      return MET * weight * (timeMin / 60);
-    },
-    calculateNetCalories() {
-      const burned = this.getCaloriesBurned(this.cyclingMinutes);
-      return this.caloriesIntake - burned;
-    },
-    animateNumber(targetValue) {
-      const start = performance.now();
-      const duration = 1000;
-      const initial = this.animatedNetCalories;
-
-      const animate = (now) => {
-        const elapsed = now - start;
-        const t = Math.min(elapsed / duration, 1);
-        const eased = this.easeInOutCubic(t);
-        this.animatedNetCalories = initial + (targetValue - initial) * eased;
-
-        if (t < 1) {
-          requestAnimationFrame(animate);
-        } else {
-          this.animatedNetCalories = targetValue; // 최종 값 보정
-        }
-      };
-      requestAnimationFrame(animate);
-    },
   }
-}
 </script>
 <style lang="scss">
   .EquiredTiem{

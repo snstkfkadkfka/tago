@@ -9,7 +9,6 @@
     /> 
   </section>
 </template>
-
 <script>
 import TashuApi from '@/components/TashuApi.vue';
 
@@ -91,33 +90,29 @@ export default {
     }
   },
   methods: {
-  onReceiveLocations({ fullData }) {
-    this.internalLocations = fullData;
-    this.$emit('update:locations', fullData);
-  },
+    onReceiveLocations({ fullData }) {
+      this.internalLocations = fullData;
+      this.$emit('update:locations', fullData);
+    },
 
-  handleSearchId(id) {
-    this.selectedId = id; // ⬅️ 전달할 ID 저장
-  const loc = this.internalLocations.find(l => l.id === id);
-  if (!loc) return;
-
-  const ll = new naver.maps.LatLng(loc.x_pos, loc.y_pos);
-  const marker = new naver.maps.Marker({
-    position: ll,     // loc로 바꿔줌
-    map: this.map,
-    title: loc.name
-  });
-
-  naver.maps.Event.addListener(marker, 'click', () => {
-    this.map.panTo(marker.getPosition());
-  });
-
-  this.map.panTo(ll);  // 부드럽게 이동
-  this.map.setZoom(17); // 줌 설정
-},
+    handleSearchId(id) {
+      this.selectedId = id; //  전달할 ID 저장
+      const loc = this.internalLocations.find(l => l.id === id);
+      if (!loc) return;
+      const ll = new naver.maps.LatLng(loc.x_pos, loc.y_pos);
+      const marker = new naver.maps.Marker({
+        position: ll,     // loc로 바꿔줌
+        map: this.map,
+        title: loc.name
+      });
+      naver.maps.Event.addListener(marker, 'click', () => {
+        this.map.panTo(marker.getPosition());
+      });
+      this.map.panTo(ll);  // 부드럽게 이동
+      this.map.setZoom(17); // 줌 설정
+    },
   }
 };
-
 </script>
 <style lang="scss"  >
   .MainMap{
@@ -130,6 +125,5 @@ export default {
   }
   .naver-map .map-control.logo-control {
     display: none !important;
-}
-
+  }
 </style>

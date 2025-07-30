@@ -7,8 +7,7 @@
       @mousedown="startHold"
       @mouseup="cancelHold"
       @mouseleave="cancelHold"
-      >
-      <!-- <p>타이머</p> -->
+    >
       <p>{{formattedTime}}</p>
     </button>
     <p class="kcalBnt" @click="$emit('show-kcal')">
@@ -39,7 +38,6 @@ export default {
       return `${hours}:${min}:${sec}`
     }
   },
-
   methods:{
     toggleTimer(){
       if(this.isRunning){
@@ -47,7 +45,7 @@ export default {
         this.timer = null;
         this.isRunning=false;
         this.records = [this.elapsed]; // 최신 값 1개만 저장
-        this.$emit('recorded', this.records[0]); // ✅ 부모로 전달
+        this.$emit('recorded', this.records[0]); 
       }else{
         this.isRunning=true;
         this.timer=setInterval(()=>{

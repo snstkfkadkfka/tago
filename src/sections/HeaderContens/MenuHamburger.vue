@@ -24,23 +24,22 @@
   </section>
 </template>
 <script>
-export default {
-  name:'MenuHamburger',
-  data(){
-    return{
-      isHidden:false,
-
-    }
-  },
-  methods:{
-    leftHidden(){
-      this.$emit('close')
+  export default {
+    name:'MenuHamburger',
+    data(){
+      return{
+        isHidden:false,
+      }
     },
-    alerts(){
-      alert("준비중 이니다.😊")
+    methods:{
+      leftHidden(){
+        this.$emit('close')
+      },
+      alerts(){
+        alert("준비중 입니다.😊")
+      }
     }
   }
-}
 </script>
 <style lang="scss">
   .MenuHamburger{

@@ -32,12 +32,11 @@ export default {
     }
   },
   methods: {
-  handleClose() {
-    this.$emit('close')       // 기존 닫기
-    this.$emit('close-kcal')  // 추가로 필요하신 이벤트
+    handleClose() {
+      this.$emit('close')     
+      this.$emit('close-kcal')  
+    }
   }
-}
-
 }
 </script>
 <style lang="scss">
